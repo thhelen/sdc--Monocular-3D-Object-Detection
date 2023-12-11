@@ -49,21 +49,21 @@ class MonoconEngine(BaseEngine):
             
             base_lr = 1e-3  # Example base learning rate
             
-            scheduler = CyclicScheduler(
-                         optimizer,
-                         total_steps=total_steps,
-                         target_lr_ratio=(10, 1E-04),
-                         target_momentum_ratio=(0.85 / 0.95, 1.0),
-                         period_up=0.4)
-            # scheduler = OneCycleLR(optimizer, 
-            #            max_lr=base_lr * 10,  # 10 is your target_lr_ratio[0]
-            #            total_steps=total_steps, 
-            #            pct_start=0.4,  # Same as period_up in your scheduler
-            #            anneal_strategy='cos',
-            #            base_momentum=1.0,  # target_momentum_ratio[1]
-            #            max_momentum=0.85 / 0.95,  # target_momentum_ratio[0]
-            #            div_factor=10,  # target_lr_ratio[0]
-            #            final_div_factor=10000)  # Reciprocal of target_lr_ratio[1]
+            # scheduler = CyclicScheduler(
+            #              optimizer,
+            #              total_steps=total_steps,
+            #              target_lr_ratio=(10, 1E-04),
+            #              target_momentum_ratio=(0.85 / 0.95, 1.0),
+            #              period_up=0.4)
+            scheduler = OneCycleLR(optimizer, 
+                        max_lr=base_lr * 10,  # 10 is your target_lr_ratio[0]
+                        total_steps=total_steps, 
+                        pct_start=0.4,  # Same as period_up in your scheduler
+                        anneal_strategy='cos',
+                        base_momentum=1.0,  # target_momentum_ratio[1]
+                        max_momentum=0.85 / 0.95,  # target_momentum_ratio[0]
+                        div_factor=10,  # target_lr_ratio[0]
+                        final_div_factor=10000)  # Reciprocal of target_lr_ratio[1]
             
         return optimizer, scheduler
     
